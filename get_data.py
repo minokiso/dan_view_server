@@ -55,15 +55,24 @@ def get_data():
             lastday_output = d
     if not daily_line_oee:
         obj, created = RealOEEDay.objects.get_or_create(time=datetime.datetime.now(), value=0)
-        print("RealOEEDay 为空", datetime.datetime.now())
+        if created:
+            print("RealOEEDay 创建成功", datetime.datetime.now(), obj.value)
     else:
-        RealOEEDay.objects.get_or_create(time=datetime.datetime.fromtimestamp(daily_line_oee.get("time")),
-                                         value=daily_line_oee.get("value"))
+        obj, created = RealOEEDay.objects.get_or_create(
+            time=datetime.datetime.fromtimestamp(daily_line_oee.get("time")),
+            value=daily_line_oee.get("value"))
+        if created:
+            print("RealOEEDay 创建成功", datetime.datetime.now(), obj.value)
     if not lastday_output:
-        LastDayOutPut.objects.get_or_create(time=datetime.datetime.now(), value=0)
+        obj, created = LastDayOutPut.objects.get_or_create(time=datetime.datetime.now(), value=0)
+        if created:
+            print("LastDayOutPut 创建成功", datetime.datetime.now(), obj.value)
     else:
-        LastDayOutPut.objects.get_or_create(time=datetime.datetime.fromtimestamp(lastday_output.get("time")),
-                                            value=lastday_output.get("value"))
+        obj, created = LastDayOutPut.objects.get_or_create(
+            time=datetime.datetime.fromtimestamp(lastday_output.get("time")),
+            value=lastday_output.get("value"))
+        if created:
+            print("LastDayOutPut 创建成功", datetime.datetime.now(), obj.value)
 
 
 def get_data_thread():
