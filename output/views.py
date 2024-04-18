@@ -10,7 +10,11 @@ from output.models import LastDayOutPut, RealOEEDay
 class LastDayOutPutViewSet(ModelViewSetPlus):
     model = LastDayOutPut
 
-    def get_queryset(self):
+    def list(self, request, *args, **kwargs):
+        self.get_queryset = self.get_time_queryset
+        return super().list(request, *args, **kwargs)
+
+    def get_time_queryset(self):
         today = datetime.now().date()
         # today = date(2024, 4, 14)
         weekday = today.weekday()
@@ -23,6 +27,9 @@ class LastDayOutPutViewSet(ModelViewSetPlus):
             time__range=[start_date, today]
         )
         return before_today_this_week
+
+    def post(self, request, *args, **kwargs):
+        return super().list(request, *args, **kwargs)
 
 
 class RealOEEDayViewSet(ModelViewSetPlus):

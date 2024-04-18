@@ -54,7 +54,8 @@ def get_data():
         if d.get("id") == "178f106f09214924b3c80f3987c0361f:1":
             lastday_output = d
     if not daily_line_oee:
-        RealOEEDay.objects.get_or_create(time=datetime.datetime.now(), value=0)
+        obj, created = RealOEEDay.objects.get_or_create(time=datetime.datetime.now(), value=0)
+        print("RealOEEDay 为空", datetime.datetime.now())
     else:
         RealOEEDay.objects.get_or_create(time=datetime.datetime.fromtimestamp(daily_line_oee.get("time")),
                                          value=daily_line_oee.get("value"))
