@@ -6,6 +6,7 @@ import requests
 import threading
 import os
 import django
+from django.forms import model_to_dict
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'dan_view.settings')
 django.setup()
@@ -47,32 +48,28 @@ def get_data():
     response = requests.post(url, data=data)
     daily_line_oee = None
     lastday_output = None
+    today = datetime.datetime.now()
 
     for d in response.json().get("data", []):
         if d.get("id") == "178f106f09214924b3c80f3987c0361f:5":
             daily_line_oee = d
         if d.get("id") == "178f106f09214924b3c80f3987c0361f:1":
             lastday_output = d
-    if not daily_line_oee:
-        obj, created = RealOEEDay.objects.get_or_create(time=datetime.datetime.now(), value=0)
-        if created:
-            print("RealOEEDay 创建成功", datetime.datetime.now(), obj.value)
-    else:
-        obj, created = RealOEEDay.objects.get_or_create(
-            time=datetime.datetime.fromtimestamp(daily_line_oee.get("time")),
-            value=daily_line_oee.get("value"))
-        if created:
-            print("RealOEEDay 创建成功", datetime.datetime.now(), obj.value)
-    if not lastday_output:
-        obj, created = LastDayOutPut.objects.get_or_create(time=datetime.datetime.now(), value=0)
-        if created:
-            print("LastDayOutPut 创建成功", datetime.datetime.now(), obj.value)
-    else:
-        obj, created = LastDayOutPut.objects.get_or_create(
-            time=datetime.datetime.fromtimestamp(lastday_output.get("time")),
-            value=lastday_output.get("value"))
-        if created:
-            print("LastDayOutPut 创建成功", datetime.datetime.now(), obj.value)
+    r_obj, r_created = RealOEEDay.objects.get_or_create(
+        time__date=today.date(),
+        defaults={
+            "value": daily_line_oee.get("value") if daily_line_oee else 0,
+            "time": today
+        })
+    print("RealOEEDay 创建成功", datetime.datetime.now(), model_to_dict(r_obj), r_created)
+    l_obj, l_created = LastDayOutPut.objects.get_or_create(
+        time__date=today.date(),
+        defaults={
+            "value": lastday_output.get("value") if lastday_output else 0,
+            "time": today
+        })
+    print("LastDayOutPut 创建成功", datetime.datetime.now(), model_to_dict(l_obj), l_created)
+    print("--------------------------------")
 
 
 def get_data_thread():
@@ -81,7 +78,7 @@ def get_data_thread():
     except Exception as e:
         traceback.print_exc()
     finally:
-        threading.Timer(30, get_data_thread).start()
+        threading.Timer(10, get_data_thread).start()
 
 
 if __name__ == '__main__':

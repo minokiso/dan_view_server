@@ -3,6 +3,8 @@ from datetime import datetime, timedelta, date
 from django.shortcuts import render
 
 # Create your views here.
+from rest_framework.decorators import action
+
 from Utils.viewset import ModelViewSetPlus
 from output.models import LastDayOutPut, RealOEEDay
 
@@ -28,7 +30,8 @@ class LastDayOutPutViewSet(ModelViewSetPlus):
         )
         return before_today_this_week
 
-    def post(self, request, *args, **kwargs):
+    @action(methods=["get"], detail=False)
+    def list_all(self, request, *args, **kwargs):
         return super().list(request, *args, **kwargs)
 
 
