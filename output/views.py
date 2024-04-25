@@ -46,3 +46,7 @@ class RealOEEDayViewSet(ModelViewSetPlus):
             time__range=[start_of_week, today]
         ).exclude(time__date=today.date())
         return before_today_this_week
+
+    @action(methods=["get"], detail=False)
+    def list_all(self, request, *args, **kwargs):
+        return super().list(request, *args, **kwargs)
