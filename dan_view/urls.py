@@ -18,12 +18,12 @@ Including another URLconf
 from django.urls import path
 from rest_framework.routers import SimpleRouter
 
-from output.views import LastDayOutPutViewSet
+from output.views import LastDayOutPutViewSet, RealOEEDayViewSet
 from public.views import UserViewSet
 
 router = SimpleRouter()
 router.register(r"user", UserViewSet, basename="user")
 router.register(r"last_day_output", LastDayOutPutViewSet, basename="last_day_output")
-router.register(r"real_oee_day", LastDayOutPutViewSet, basename="real_oee_day")
+router.register(r"real_oee_day", RealOEEDayViewSet, basename="real_oee_day")
 urlpatterns = [
               ] + router.urls
