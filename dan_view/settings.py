@@ -19,6 +19,7 @@ INSTALLED_APPS = [
     'output',
     'public',
     'log',
+    'sslserver',
 ]
 CORS_ALLOW_ALL_ORIGINS = True
 
