@@ -6,7 +6,7 @@ from django.shortcuts import render
 from rest_framework.decorators import action
 
 from Utils.viewset import ModelViewSetPlus
-from output.models import LastDayOutPut, RealOEEDay
+from output.models import LastDayOutPut, RealOEEDay, EVR1, EVR2
 
 
 class LastDayOutPutViewSet(ModelViewSetPlus):
@@ -18,12 +18,12 @@ class LastDayOutPutViewSet(ModelViewSetPlus):
 
     def get_time_queryset(self):
         today = datetime.now().date()
-        # today = date(2024, 4, 22)
+        # today = date(2024, 4, 23)
         weekday = today.weekday()
         if weekday == 0:
             start_date = today - timedelta(days=6)
         else:
-            start_date = today - timedelta(days=weekday-1)
+            start_date = today - timedelta(days=weekday - 1)
 
         before_today_this_week = super().get_queryset().filter(
             time__range=[start_date, today + timedelta(days=1)]
@@ -49,7 +49,7 @@ class RealOEEDayViewSet(ModelViewSetPlus):
         if weekday == 0:
             start_date = today - timedelta(days=6)
         else:
-            start_date = today - timedelta(days=weekday-1)
+            start_date = today - timedelta(days=weekday - 1)
 
         before_today_this_week = super().get_queryset().filter(
             time__range=[start_date, today + timedelta(days=1)]
@@ -59,3 +59,11 @@ class RealOEEDayViewSet(ModelViewSetPlus):
     @action(methods=["get"], detail=False)
     def list_all(self, request, *args, **kwargs):
         return super().list(request, *args, **kwargs)
+
+
+class EVR1ViewSet(LastDayOutPutViewSet):
+    model = EVR1
+
+
+class EVR2ViewSet(RealOEEDayViewSet):
+    model = EVR2

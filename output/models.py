@@ -18,3 +18,19 @@ class RealOEEDay(models.Model):
 
     class Meta:
         db_table = 'real_oeeday'
+
+
+class EVR1(models.Model):
+    time = models.DateTimeField(null=True)
+    value = models.CharField(max_length=255, null=True)
+
+    class Meta:
+        db_table = 'evr1'
+
+
+class EVR2(models.Model):
+    time = models.DateTimeField(null=True)
+    value = models.CharField(max_length=255, null=True)
+
+    class Meta:
+        db_table = 'evr2'

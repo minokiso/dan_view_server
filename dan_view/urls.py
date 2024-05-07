@@ -25,5 +25,7 @@ router = SimpleRouter()
 router.register(r"user", UserViewSet, basename="user")
 router.register(r"last_day_output", LastDayOutPutViewSet, basename="last_day_output")
 router.register(r"real_oee_day", RealOEEDayViewSet, basename="real_oee_day")
+router.register(r"evr1", RealOEEDayViewSet, basename="evr1")
+router.register(r"evr2", RealOEEDayViewSet, basename="evr2")
 urlpatterns = [
               ] + router.urls
