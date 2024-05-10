@@ -1,6 +1,7 @@
 import datetime
 import hashlib
 import traceback
+from zoneinfo import ZoneInfo
 
 import requests
 import threading
@@ -12,7 +13,7 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'dan_view.settings')
 django.setup()
 
 from output.models import RealOEEDay, LastDayOutPut, EVR1, EVR2
-
+tz = ZoneInfo("Asia/Shanghai")
 
 def get_token():
     now = datetime.datetime.utcnow()
@@ -48,7 +49,7 @@ def get_t2():
     response = requests.post(url, data=data)
     daily_line_oee = None
     lastday_output = None
-    today = datetime.datetime.now()
+    today = datetime.datetime.now(tz)
 
     for d in response.json().get("data", []):
         if d.get("id") == "178f106f09214924b3c80f3987c0361f:5":
@@ -61,14 +62,14 @@ def get_t2():
             "value": daily_line_oee if daily_line_oee else 0,
             "time": today
         })
-    print("RealOEEDay 创建成功", datetime.datetime.now(), model_to_dict(r_obj), r_created)
+    print("RealOEEDay 创建成功", today, model_to_dict(r_obj), r_created)
     l_obj, l_created = LastDayOutPut.objects.update_or_create(
         time__date=today.date(),
         defaults={
             "value": lastday_output if lastday_output else 0,
             "time": today
         })
-    print("LastDayOutPut 创建成功", datetime.datetime.now(), model_to_dict(l_obj), l_created)
+    print("LastDayOutPut 创建成功", today, model_to_dict(l_obj), l_created)
 
 
 def get_evr():
@@ -79,7 +80,7 @@ def get_evr():
     response = requests.post(url, data=data)
     evr1 = None
     evr2 = None
-    today = datetime.datetime.now()
+    today = datetime.datetime.now(tz)
     for d in response.json().get("data", []):
         if d.get("id") == "4e29f69bb02a4761b91f7cb7fa8cea35:3":
             evr1 = d.get("value")
@@ -91,14 +92,14 @@ def get_evr():
             "value": evr1 if evr1 else 0,
             "time": today
         })
-    print("EVR1 创建成功", datetime.datetime.now(), model_to_dict(evr1), evr1_created)
+    print("EVR1 创建成功", today, model_to_dict(evr1), evr1_created)
     evr2_obj, evr2_created = EVR2.objects.update_or_create(
         time__date=today.date(),
         defaults={
             "value": evr2 if evr2 else 0,
             "time": today
         })
-    print("EVR2 创建成功", datetime.datetime.now(), model_to_dict(evr2_obj), evr2_created)
+    print("EVR2 创建成功", today, model_to_dict(evr2_obj), evr2_created)
 
 
 def get_data_thread():
