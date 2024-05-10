@@ -1,7 +1,7 @@
 import datetime
 import hashlib
 import traceback
-from zoneinfo import ZoneInfo
+import pytz
 
 import requests
 import threading
@@ -13,7 +13,9 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'dan_view.settings')
 django.setup()
 
 from output.models import RealOEEDay, LastDayOutPut, EVR1, EVR2
-tz = ZoneInfo("Asia/Shanghai")
+
+tz_Beijing = pytz.timezone('Asia/Shanghai')
+
 
 def get_token():
     now = datetime.datetime.utcnow()
@@ -49,7 +51,8 @@ def get_t2():
     response = requests.post(url, data=data)
     daily_line_oee = None
     lastday_output = None
-    today = datetime.datetime.now(tz)
+    datetime_utc = datetime.datetime.now(pytz.utc)
+    today = datetime_utc.astimezone(tz_Beijing)
 
     for d in response.json().get("data", []):
         if d.get("id") == "178f106f09214924b3c80f3987c0361f:5":
@@ -80,7 +83,8 @@ def get_evr():
     response = requests.post(url, data=data)
     evr1 = None
     evr2 = None
-    today = datetime.datetime.now(tz)
+    datetime_utc = datetime.datetime.now(pytz.utc)
+    today = datetime_utc.astimezone(tz_Beijing)
     for d in response.json().get("data", []):
         if d.get("id") == "4e29f69bb02a4761b91f7cb7fa8cea35:3":
             evr1 = d.get("value")
