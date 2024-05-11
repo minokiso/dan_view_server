@@ -114,7 +114,7 @@ def get_data_thread():
         traceback.print_exc()
     finally:
         print("--------------------------------")
-        threading.Timer(10, get_data_thread).start()
+        threading.Timer(3600, get_data_thread).start()
 
 
 if __name__ == '__main__':
