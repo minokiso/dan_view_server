@@ -51,8 +51,9 @@ def get_t2():
     response = requests.post(url, data=data)
     daily_line_oee = None
     lastday_output = None
-    datetime_utc = datetime.datetime.now(pytz.utc)
-    today = datetime_utc.astimezone(tz_Beijing)
+    # datetime_utc = datetime.datetime.now(pytz.utc)
+    # today = datetime_utc.astimezone(tz_Beijing)
+    today = datetime.datetime.now()
 
     for d in response.json().get("data", []):
         if d.get("id") == "178f106f09214924b3c80f3987c0361f:5":
@@ -83,8 +84,10 @@ def get_evr():
     response = requests.post(url, data=data)
     evr1 = None
     evr2 = None
-    datetime_utc = datetime.datetime.now(pytz.utc)
-    today = datetime_utc.astimezone(tz_Beijing)
+    # datetime_utc = datetime.datetime.now(pytz.utc)
+    # today = datetime_utc.astimezone(tz_Beijing)
+    today = datetime.datetime.now()
+
     for d in response.json().get("data", []):
         if d.get("id") == "4e29f69bb02a4761b91f7cb7fa8cea35:3":
             evr1 = d.get("value")
