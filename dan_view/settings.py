@@ -18,11 +18,11 @@ INSTALLED_APPS = [
     'django_filters',
     'output',
     'public',
-    'log',
     'sslserver',
 ]
 CORS_ALLOW_ALL_ORIGINS = True
-
+AUTH_USER_MODEL = "public.User"
+AUTHENTICATION_BACKENDS = ["authentication_backends.jwt_authentication_backend.JWTAuthenticationBackend"]
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'corsheaders.middleware.CorsMiddleware',
@@ -52,12 +52,23 @@ ROOT_URLCONF = 'dan_view.urls'
 
 WSGI_APPLICATION = 'dan_view.wsgi.application'
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'danview',
+        'USER': 'postgres',
+        'PASSWORD': '123456',
+        'HOST': '81.70.244.182',
+        'PORT': '5432',
     }
 }
+
 
 LANGUAGE_CODE = 'en-us'
 
@@ -65,7 +76,7 @@ TIME_ZONE = 'UTC'
 
 USE_I18N = True
 
-USE_TZ = True
+USE_TZ = False
 
 STATIC_URL = 'static/'
 

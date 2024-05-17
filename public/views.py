@@ -1,20 +1,16 @@
 import os
 import traceback
 from rest_framework.exceptions import AuthenticationFailed
-from rest_framework.viewsets import ViewSet
 from rest_framework_simplejwt.exceptions import TokenError, InvalidToken
 from rest_framework_simplejwt.views import TokenObtainPairView
 
 from Utils.response import SuccessResponse, FailureResponse
-from Utils.viewset import RetrieveModelMixinPlus, GenericViewSetPlus, ListModelMixinPlus, ModelViewSetPlus
-from log.views import create_log
+from Utils.viewset import ModelViewSetPlus
 from public.models import User
-from public.serializers import UserSerializer
 
 
 class UserViewSet(ModelViewSetPlus):
     model = User
-    serializer_class = UserSerializer
 
 
 class LoginView(TokenObtainPairView):
