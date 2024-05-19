@@ -61,7 +61,7 @@ WSGI_APPLICATION = 'dan_view.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'danview',
+        'NAME': 'postgres',
         'USER': 'postgres',
         'PASSWORD': '123456',
         'HOST': '81.70.244.182',
