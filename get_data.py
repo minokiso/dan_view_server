@@ -1,8 +1,6 @@
 import datetime
 import hashlib
 import traceback
-import pytz
-
 import requests
 import threading
 import os
@@ -11,10 +9,7 @@ from django.forms import model_to_dict
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'dan_view.settings')
 django.setup()
-
 from output.models import RealOEEDay, LastDayOutPut, EVR1, EVR2
-
-tz_Beijing = pytz.timezone('Asia/Shanghai')
 
 
 def get_token():
@@ -51,8 +46,6 @@ def get_t2():
     response = requests.post(url, data=data)
     daily_line_oee = None
     lastday_output = None
-    # datetime_utc = datetime.datetime.now(pytz.utc)
-    # today = datetime_utc.astimezone(tz_Beijing)
     today = datetime.datetime.now()
 
     for d in response.json().get("data", []):
@@ -84,8 +77,6 @@ def get_evr():
     response = requests.post(url, data=data)
     evr1 = None
     evr2 = None
-    # datetime_utc = datetime.datetime.now(pytz.utc)
-    # today = datetime_utc.astimezone(tz_Beijing)
     today = datetime.datetime.now()
 
     for d in response.json().get("data", []):
