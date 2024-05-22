@@ -6,6 +6,7 @@ import threading
 import os
 import django
 from django.forms import model_to_dict
+from django.utils import timezone
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'dan_view.settings')
 django.setup()
@@ -46,8 +47,8 @@ def get_t2():
     response = requests.post(url, data=data)
     daily_line_oee = None
     lastday_output = None
-    today = datetime.datetime.now()
-
+    # today = datetime.datetime.now()
+    today = timezone.now()
     for d in response.json().get("data", []):
         if d.get("id") == "178f106f09214924b3c80f3987c0361f:5":
             daily_line_oee = d.get("value")
@@ -77,7 +78,8 @@ def get_evr():
     response = requests.post(url, data=data)
     evr1 = None
     evr2 = None
-    today = datetime.datetime.now()
+    # today = datetime.datetime.now()
+    today = timezone.now()
 
     for d in response.json().get("data", []):
         if d.get("id") == "4e29f69bb02a4761b91f7cb7fa8cea35:3":
