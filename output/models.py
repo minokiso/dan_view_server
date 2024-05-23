@@ -9,7 +9,7 @@ class LastDayOutPut(models.Model):
 
     class Meta:
         db_table = 'last_day_out_put'
-        ordering = ('-time',)
+        ordering = ('time',)
 
 
 class RealOEEDay(models.Model):
@@ -19,7 +19,7 @@ class RealOEEDay(models.Model):
 
     class Meta:
         db_table = 'real_oeeday'
-        ordering = ('-time',)
+        ordering = ('time',)
 
 
 class EVR1(models.Model):
@@ -28,7 +28,7 @@ class EVR1(models.Model):
 
     class Meta:
         db_table = 'evr1'
-        ordering = ('-time',)
+        ordering = ('time',)
 
 
 class EVR2(models.Model):
@@ -37,4 +37,4 @@ class EVR2(models.Model):
 
     class Meta:
         db_table = 'evr2'
-        ordering = ('-time',)
+        ordering = ('time',)
